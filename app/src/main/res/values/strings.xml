@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">App</string>
+    <string name="progress_dialog_loading">Loading</string>
+    <string name="progress_dialog_wait">Please wait ...</string>
 </resources>
