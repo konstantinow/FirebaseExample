@@ -1,19 +1,25 @@
 package com.besplatka.test;
 
-class Poster {
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+class Poster implements Serializable {
     private String id;
     private String title;
     private String description;
     private String name;
     private String phone;
-    private double cost;
+    private String city;
+    private int cost = 0;
 
-    public Poster(String id, String title, String description, String name, String phone, double cost) {
+    public Poster(String id, String title, String description, String name, String phone, String city, int cost) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.name = name;
         this.phone = phone;
+        this.city = city;
         this.cost = cost;
     }
 
@@ -57,11 +63,19 @@ class Poster {
         this.phone = phone;
     }
 
-    public double getCost() {
+    public int getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

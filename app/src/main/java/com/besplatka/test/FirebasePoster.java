@@ -5,16 +5,18 @@ class FirebasePoster {
     private String description;
     private String name;
     private String phone;
-    private double cost;
+    private String city;
+    private int cost;
 
     public FirebasePoster() {
     }
 
-    public FirebasePoster(String title, String description, String name, String phone, double cost) {
+    public FirebasePoster(String title, String description, String name, String phone, String city, int cost) {
         this.title = title;
         this.description = description;
         this.name = name;
         this.phone = phone;
+        this.city = city;
         this.cost = cost;
     }
 
@@ -50,11 +52,19 @@ class FirebasePoster {
         this.phone = phone;
     }
 
-    public double getCost() {
+    public int getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(int cost) {
         this.cost = cost;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

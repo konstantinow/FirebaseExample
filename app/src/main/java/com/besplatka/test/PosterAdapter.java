@@ -40,6 +40,7 @@ public class PosterAdapter extends RecyclerView.Adapter<PosterAdapter.ViewHolder
         Poster p = mData.get(position);
         holder.tvTitle.setText(p.getTitle());
         holder.tvDescription.setText(p.getDescription());
+        holder.tvCity.setText(p.getCity());
         holder.tvCost.setText(String.valueOf(p.getCost()));
         holder.tvContacts.setText(p.getName() + ": " + p.getPhone());
     }

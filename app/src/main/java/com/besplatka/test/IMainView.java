@@ -7,4 +7,7 @@ public interface IMainView {
     void hideProgress();
     void updatePosters(List<Poster> posters);
     void showMessage(String message);
+    void showDialog(Poster poster);
+    void hideDialog();
+    void openEditPost(Poster poster);
 }

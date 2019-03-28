@@ -1,6 +1,7 @@
 package com.besplatka.test;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     private IMainPresenter mMainPresenter = new MainPresenter(this);
     private PosterAdapter mPostersAdapter;
     private ProgressDialog mProgressDialog;
+    private PosterDialog mPosterDialog;
     private FloatingActionButton mFloatingActionButton;
 
     @Override
@@ -31,7 +33,24 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMainPresenter.onCreatePosterClick();
+                mMainPresenter.onPosterCreateClick();
+            }
+        });
+        mPosterDialog = new PosterDialog(this);
+        mPosterDialog.setOnDialogButtonsClick(new PosterDialog.OnDialogButtonsClick() {
+            @Override
+            public void onEditClick(Poster poster) {
+                mMainPresenter.onDialogPosterEditClick(poster);
+            }
+
+            @Override
+            public void onRemoveClick(Poster poster) {
+                mMainPresenter.onDialogPosterRemoveClick(poster);
+            }
+
+            @Override
+            public void onCancelClick() {
+                mMainPresenter.onDialogPosterCancelClick();
             }
         });
     }
@@ -49,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements IMainView {
         mPostersAdapter.setClickListener(new PosterAdapter.ItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                mMainPresenter.onPosterClick(position);
+                mMainPresenter.onPosterClick(mPostersAdapter.getItem(position));
             }
         });
         recyclerView.setAdapter(mPostersAdapter);
@@ -81,5 +100,24 @@ public class MainActivity extends AppCompatActivity implements IMainView {
     @Override
     public void showMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showDialog(Poster poster) {
+        mPosterDialog.showDialog(poster);
+    }
+
+    @Override
+    public void hideDialog() {
+        mPosterDialog.hideDialog();
+    }
+
+    @Override
+    public void openEditPost(Poster poster) {
+        Intent intent = new Intent(this, PosterActivity.class);
+        if (poster != null) {
+            intent.putExtra(PosterActivity.KEY_POSTER, poster);
+        }
+        startActivity(intent);
     }
 }

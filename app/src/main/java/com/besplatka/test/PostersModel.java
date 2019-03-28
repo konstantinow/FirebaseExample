@@ -2,6 +2,7 @@ package com.besplatka.test;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.telephony.PhoneNumberUtils;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -42,6 +43,7 @@ public class PostersModel implements IPostersModel {
                                 firebasePoster.getDescription(),
                                 firebasePoster.getName(),
                                 firebasePoster.getPhone(),
+                                firebasePoster.getCity(),
                                 firebasePoster.getCost())
                         );
                     }
@@ -58,23 +60,17 @@ public class PostersModel implements IPostersModel {
     }
 
     @Override
-    public void createPoster(Poster poster, OnUpdatePosterCallback onUpdatePosterCallback) {
+    public void createPoster(Poster poster, final OnUpdatePosterCallback onUpdatePosterCallback) {
+        if (!isValidPoster(poster, onUpdatePosterCallback)) {
+            return;
+        }
+
         DatabaseReference add = mDatabaseReference.push();
         add.setValue(new FirebasePoster(poster.getTitle(),
-                poster.getDescription(),
-                poster.getName(),
-                poster.getPhone(),
-                poster.getCost())
-        );
-    }
-
-    @Override
-    public void updatePoster(Poster poster, final OnUpdatePosterCallback onUpdatePosterCallback) {
-        mDatabaseReference.child(poster.getId()).setValue(
-                new FirebasePoster(poster.getTitle(),
                         poster.getDescription(),
                         poster.getName(),
                         poster.getPhone(),
+                        poster.getCity(),
                         poster.getCost()),
                 new DatabaseReference.CompletionListener() {
                     @Override
@@ -88,6 +84,76 @@ public class PostersModel implements IPostersModel {
                     }
                 }
         );
+    }
+
+    @Override
+    public void updatePoster(Poster poster, final OnUpdatePosterCallback onUpdatePosterCallback) {
+        if (!isValidPoster(poster, onUpdatePosterCallback)) {
+            return;
+        }
+
+        mDatabaseReference.child(poster.getId()).setValue(
+                new FirebasePoster(poster.getTitle(),
+                        poster.getDescription(),
+                        poster.getName(),
+                        poster.getPhone(),
+                        poster.getCity(),
+                        poster.getCost()),
+                new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        if (databaseError == null) {
+                            onUpdatePosterCallback.onSuccess();
+                        } else {
+                            databaseError.toException().printStackTrace();
+                            onUpdatePosterCallback.onFailure(databaseError.getMessage());
+                        }
+                    }
+                }
+        );
+    }
+
+    @Override
+    public void removePoster(Poster poster, final OnUpdatePosterCallback onUpdatePosterCallback) {
+        mDatabaseReference.child(poster.getId()).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                if (databaseError == null) {
+                    onUpdatePosterCallback.onSuccess();
+                } else {
+                    databaseError.toException().printStackTrace();
+                    onUpdatePosterCallback.onFailure(databaseError.getMessage());
+                }
+            }
+        });
+    }
+
+    private boolean isValidPoster(Poster poster, OnUpdatePosterCallback onUpdatePosterCallback) {
+        if (poster.getTitle().isEmpty()) {
+            onUpdatePosterCallback.onFailure("Title must be not empty");
+            return false;
+        }
+        if (poster.getDescription().isEmpty()) {
+            onUpdatePosterCallback.onFailure("Description must be not empty");
+            return false;
+        }
+        if (poster.getName().isEmpty()) {
+            onUpdatePosterCallback.onFailure("Name must be not empty");
+            return false;
+        }
+        if (!PhoneNumberUtils.isGlobalPhoneNumber(poster.getPhone())) {
+            onUpdatePosterCallback.onFailure("Invalid phone number");
+            return false;
+        }
+        if (poster.getCity().isEmpty()) {
+            onUpdatePosterCallback.onFailure("City must be not empty");
+            return false;
+        }
+        if (poster.getCost() == 0) {
+            onUpdatePosterCallback.onFailure("Cost must be not empty");
+            return false;
+        }
+        return true;
     }
 
 }
