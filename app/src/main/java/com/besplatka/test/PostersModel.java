@@ -149,8 +149,8 @@ public class PostersModel implements IPostersModel {
             onUpdatePosterCallback.onFailure("City must be not empty");
             return false;
         }
-        if (poster.getCost() == 0) {
-            onUpdatePosterCallback.onFailure("Cost must be not empty");
+        if (poster.getCost() < 0) {
+            onUpdatePosterCallback.onFailure("Invalid cost");
             return false;
         }
         return true;

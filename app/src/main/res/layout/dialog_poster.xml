@@ -17,20 +17,20 @@
 
     <Button
         android:id="@+id/btn_edit"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginLeft="36dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="36dp"
         android:text="@string/dialog_poster_edit"
         android:textColor="#000"
-        android:textSize="12sp" />
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btn_remove"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
         android:layout_gravity="center"
         android:layout_marginLeft="36dp"
         android:layout_marginTop="8dp"
@@ -38,6 +38,6 @@
         android:layout_marginBottom="36dp"
         android:text="@string/dialog_poster_remove"
         android:textColor="#000"
-        android:textSize="12sp" />
+        android:textSize="16sp" />
 
 </LinearLayout>

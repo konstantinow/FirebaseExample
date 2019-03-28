@@ -43,6 +43,7 @@ public class PosterActivity extends AppCompatActivity implements IPosterView {
             @Override
             public void onClick(View v) {
                 String id = mPoster != null ? mPoster.getId() : null;
+                int cost = mEtCost.getText().toString().isEmpty() ? -1: Integer.parseInt(mEtCost.getText().toString());
                 Poster poster = new Poster(
                         id,
                         mEtTitle.getText().toString(),
@@ -50,7 +51,7 @@ public class PosterActivity extends AppCompatActivity implements IPosterView {
                         mEtName.getText().toString(),
                         mEtPhone.getText().toString(),
                         mEtCity.getText().toString(),
-                        Integer.parseInt(mEtCost.getText().toString())
+                        cost
                 );
                 if (mBtnComplete.getText().toString().equals(getString(R.string.update_poster_button))) {
                     mPosterPresenter.onUpdatePosterClick(poster);

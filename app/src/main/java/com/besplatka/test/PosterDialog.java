@@ -53,10 +53,10 @@ public class PosterDialog {
             }
         });
 
-        Window window = mDialog.getWindow();
-        if (window != null) {
-            window.setBackgroundDrawableResource(android.R.color.transparent);
-        }
+//        Window window = mDialog.getWindow();
+//        if (window != null) {
+//            window.setBackgroundDrawableResource(android.R.color.transparent);
+//        }
     }
 
     public void showDialog(Poster poster) {
